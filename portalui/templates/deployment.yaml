@@ -28,11 +28,25 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}"
+          args: {{- toYaml .Values.image.args | nindent 12 }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 5678
-              protocol: TCP
+          - name: http
+            containerPort: 5678
+            protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /portal
+              port: 5678
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 2
+          livenessProbe:
+            httpGet:
+              path: /portal
+              port: 5678
+            periodSeconds: 15
+            timeoutSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

@@ -7,6 +7,7 @@ replicaCount: 1
 image:
   repository: hashicorp/http-echo  
   pullPolicy: IfNotPresent
+  args: ["-text=Portal-UI"]
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -39,7 +40,7 @@ ingress:
   annotations: 
     nginx.ingress.kubernetes.io/rewrite-target: /
   paths:
-    - path: "/banana"
+    - path: "/portal"
       pathType: Prefix
 
 
